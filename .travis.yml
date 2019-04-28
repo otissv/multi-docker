@@ -1,0 +1,18 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t otissv/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run otissv/react-test npm run test -- --coverage
+
+after_success:
+  - docker build -t otissv/multi-client ./client
+  - docker build -t otissv/multi-nginx  ./nginx
+  - docker build -t otissv/multi-server ./server
+  - docker build -t otissv/multi-worker ./worker
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --password-stdin
+  - docker push otissv/multi-client otissv/multi-nginx otissv/multi-server otissv/multi-worker
