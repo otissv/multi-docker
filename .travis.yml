@@ -14,5 +14,5 @@ after_success:
   - docker build -t otissv/multi-server ./server
   - docker build -t otissv/multi-worker ./worker
 
-  - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push otissv/multi-client otissv/multi-nginx otissv/multi-server otissv/multi-wor
